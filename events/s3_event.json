@@ -1,0 +1,38 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws:s3",
+      "awsRegion": "eu-west-1",
+      "eventTime": "2020-12-07T15:13:20.261Z",
+      "eventName": "ObjectCreated:Put",
+      "userIdentity": {
+        "principalId": "AWS:AROAXURVKRGTPWE53M5ZB:BackplaneAssumeRoleSession"
+      },
+      "requestParameters": {
+        "sourceIPAddress": "3.251.56.47"
+      },
+      "responseElements": {
+        "x-amz-request-id": "1590EEC4AEAB1968",
+        "x-amz-id-2": "giWbAYNG+0xHIAN4gGiQCar6LhfRoP/fv73VMycGR/F6KXm5oxPlbnnK5gca3sEQ3MaGXxdqtEdMR0svvUp27QvQzLYUII//"
+      },
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "46d3d4cb-e78a-4793-af81-50a02216ccf4",
+        "bucket": {
+          "name": "houbie-sam-events",
+          "ownerIdentity": {
+            "principalId": "A2OCHHYAVDQ24N"
+          },
+          "arn": "arn:aws:s3:::houbie-sam-events"
+        },
+        "object": {
+          "key": "in/b24b6748-1a00-46e5-af04-6109b4504056-request.json",
+          "size": 20,
+          "eTag": "c4739e97d2e782ab9142b7cad4e36383",
+          "sequencer": "005FCE4697D2D5B6FF"
+        }
+      }
+    }
+  ]
+}

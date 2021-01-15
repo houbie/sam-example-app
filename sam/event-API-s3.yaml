@@ -1,0 +1,97 @@
+S3EventApiRole:
+  Type: AWS::IAM::Role
+  Properties:
+    RoleName: !Sub '${AWS::StackName}-s3-event-api-role'
+    AssumeRolePolicyDocument:
+      Statement:
+        - Effect: Allow
+          Principal:
+            Service: [ apigateway.amazonaws.com ]
+          Action: [ 'sts:AssumeRole' ]
+    ManagedPolicyArns: [ 'arn:aws:iam::aws:policy/AmazonS3FullAccess' ]
+
+S3EventApi:
+  Type: AWS::ApiGateway::RestApi
+  Properties:
+    Name: !Sub '${AWS::StackName}-s3-event-api'
+
+S3EventResource:
+  Type: AWS::ApiGateway::Resource
+  Properties:
+    RestApiId: !Ref S3EventApi
+    ParentId: !GetAtt S3EventApi.RootResourceId
+    PathPart: events-s3
+
+S3EventPostMethod:
+  Type: AWS::ApiGateway::Method
+  Properties:
+    ApiKeyRequired: false
+    HttpMethod: POST
+    AuthorizationType: NONE
+    Integration:
+      Type: AWS
+      Credentials: !GetAtt S3EventApiRole.Arn
+      IntegrationHttpMethod: PUT
+      IntegrationResponses:
+        - StatusCode: '201'
+          SelectionPattern: '2\d{2}'
+          ResponseTemplates:
+            application/json: '{"requestId": "$context.requestId"}'
+      PassthroughBehavior: WHEN_NO_MATCH
+      RequestParameters:
+        integration.request.header.Content-Type: method.request.header.Content-Type
+        integration.request.path.requestId: context.requestId
+      Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:s3:path/${SamAppBucket}/in/{requestId}-request.json'
+    MethodResponses:
+      - StatusCode: 201
+    RequestParameters:
+      method.request.header.Content-Type: false
+    ResourceId: !Ref S3EventResource
+    RestApiId: !Ref S3EventApi
+
+S3EventApiGatewayDeployment: # changing the S3EventPostMethod does not trigger the deployment to be updated, so we have to change the id
+  Type: AWS::ApiGateway::Deployment
+  Properties:
+    RestApiId: !Ref S3EventApi
+    StageName: ''
+  DependsOn: [ S3EventPostMethod ]
+
+S3EventApiStage:
+  Type: AWS::ApiGateway::Stage
+  Properties:
+    StageName: {{ stage }}
+    RestApiId: !Ref S3EventApi
+    DeploymentId: !Ref S3EventApiGatewayDeployment
+    TracingEnabled: true
+
+
+S3EventHandlerFn:
+  Type: AWS::Serverless::Function
+  Properties:
+    FunctionName: !Sub '${AWS::StackName}-s3-event-handler'
+    CodeUri: src/
+    Handler: s3_event_lambda.handler
+    Runtime: python3.8
+    Timeout: 30
+    Events:
+      EventRequestCreated:
+        Type: S3
+        Properties:
+          Bucket: !Ref SamAppBucket
+          Events: s3:ObjectCreated:Put
+          Filter:
+            S3Key:
+              Rules:
+                - { Name: prefix, Value: in/ }
+    Policies:
+      - 'arn:aws:iam::aws:policy/AmazonS3FullAccess'
+    Environment:
+      Variables:
+        EVENT_CONSUMER_URL: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/{{ stage }}/consumer-events"
+S3EventHandlerLogGroup:
+  Type: AWS::Logs::LogGroup
+  DependsOn:
+    - S3EventHandlerFn
+  Properties:
+    LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-s3-event-handler'
+    RetentionInDays: 3

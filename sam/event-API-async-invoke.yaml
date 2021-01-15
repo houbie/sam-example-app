@@ -1,0 +1,49 @@
+AsyncEventApiFn:
+  Type: AWS::Serverless::Function
+  Properties:
+    FunctionName: !Sub '${AWS::StackName}-async-event-api'
+    CodeUri: src/
+    Handler: async_event_api_lambda.handler
+    Runtime: python3.8
+    Timeout: 30
+    Events:
+      ApiEvent:
+        Type: Api
+        Properties:
+          Path: /events-async
+          Method: POST
+          RestApiId: !Ref SamManagedApi
+    Policies:
+      - 'arn:aws:iam::aws:policy/AWSLambda_FullAccess'
+    Environment:
+      Variables:
+        ASYNC_HANDLER_FN: !Sub '${AWS::StackName}-async-event-handler'
+        LOG_LEVEL: DEBUG
+EsyncEventApiLogGroup:
+  Type: AWS::Logs::LogGroup
+  DependsOn:
+    - AsyncEventApiFn
+  Properties:
+    LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-async-event-api'
+    RetentionInDays: 3
+
+
+AsyncEventHandlerFn:
+  Type: AWS::Serverless::Function
+  Properties:
+    FunctionName: !Sub '${AWS::StackName}-async-event-handler'
+    CodeUri: src/
+    Handler: async_event_lambda.handler
+    Runtime: python3.8
+    Timeout: 30
+    Environment:
+      Variables:
+        EVENT_CONSUMER_URL: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/{{ stage }}/consumer-events"
+        LOG_LEVEL: DEBUG
+AsyncEventHandlerLogGroup:
+  Type: AWS::Logs::LogGroup
+  DependsOn:
+    - AsyncEventApiFn
+  Properties:
+    LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-async-event-handler'
+    RetentionInDays: 3

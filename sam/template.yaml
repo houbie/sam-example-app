@@ -1,0 +1,39 @@
+{% set stage = env("STAGE", default="dev") %}
+{% from "sam/macros.j2" import include with context %}
+
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS SAM example application
+
+Globals:
+  Function:
+    Timeout: 3
+    Tracing: Active
+
+Resources:
+
+  # note: only the first Api in the template will be exposed by 'sam local start-api'
+  SamManagedApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: {{ stage }}
+      TracingEnabled: true
+
+  SamAppBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: {{ env("USER") }}-sam-events
+
+  {{ include("event-consumer.yaml") | indent(2) }}
+  {{ include("event-API-s3.yaml") | indent(2) }}
+  {{ include("event-API-async-invoke.yaml") | indent(2) }}
+
+
+Outputs:
+  S3PostEventUrl:
+    Value: !Sub "https://${S3EventApi}.execute-api.${AWS::Region}.amazonaws.com/{{ stage }}/events-s3"
+  AsyncPostEventUrl:
+    Value: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/{{ stage }}/events-async"
+  EventConsumerUrl:
+    Value: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/{{ stage }}/consumer-events"

@@ -1,0 +1,24 @@
+EventConsumerFn:
+  Type: AWS::Serverless::Function
+  Properties:
+    FunctionName: !Sub '${AWS::StackName}-event-consumer'
+    CodeUri: src/
+    Handler: event_consumer.lambda_handler
+    Runtime: python3.8
+    Events:
+      ApiEvent:
+        Type: Api
+        Properties:
+          Path: /consumer-events
+          Method: POST
+          RestApiId: !Ref SamManagedApi
+    Environment:
+      Variables:
+        LOG_LEVEL: DEBUG
+EventConsumerLogGroup:
+  Type: AWS::Logs::LogGroup
+  DependsOn:
+    - EventConsumerFn
+  Properties:
+    LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-event-consumer'
+    RetentionInDays: 3
