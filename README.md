@@ -117,3 +117,4 @@ You can verify with `sam --version`.
 
 `which sam` will show something like _/Users/ihoubr/.pyenv/shims/sam_. You can use this to configure the
 _SAM CLI Executable_ in the AWS toolkit (Pycharm, Intellij, Visual Studio)
+
