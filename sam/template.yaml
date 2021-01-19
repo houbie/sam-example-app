@@ -7,8 +7,10 @@ Description: AWS SAM example application
 
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 30
     Tracing: Active
+    Runtime: python3.8
+    CodeUri: src/
 
 Resources:
 

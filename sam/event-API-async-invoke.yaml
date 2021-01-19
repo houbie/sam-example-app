@@ -2,10 +2,7 @@ AsyncEventApiFn:
   Type: AWS::Serverless::Function
   Properties:
     FunctionName: !Sub '${AWS::StackName}-async-event-api'
-    CodeUri: src/
     Handler: async_event_api_lambda.handler
-    Runtime: python3.8
-    Timeout: 30
     Events:
       ApiEvent:
         Type: Api
@@ -32,10 +29,7 @@ AsyncEventHandlerFn:
   Type: AWS::Serverless::Function
   Properties:
     FunctionName: !Sub '${AWS::StackName}-async-event-handler'
-    CodeUri: src/
     Handler: async_event_lambda.handler
-    Runtime: python3.8
-    Timeout: 30
     Environment:
       Variables:
         EVENT_CONSUMER_URL: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/{{ stage }}/consumer-events"

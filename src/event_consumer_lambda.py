@@ -8,8 +8,6 @@ tracer = Tracer()
 
 @tracer.capture_lambda_handler
 @rest_api_handler
-def lambda_handler(event):
+def handler(event):
     logger.info({"message": "Consuming event", "event": event})
-    return {
-        "message": "consumed event"
-    }
+    return {"message": "consumed event"}

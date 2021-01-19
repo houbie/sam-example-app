@@ -1,0 +1,26 @@
+{
+  "data": [
+    {
+      "_id": "60006873fb89c75605652c2b",
+      "index": 0,
+      "guid": "58bff266-7374-43d3-ad01-81cd1dad1ef7",
+      "isActive": true,
+      "balance": "$2,053.83",
+      "picture": "http://placehold.it/32x32",
+      "age": 35,
+      "eyeColor": "brown",
+      "name": {
+        "first": "Fanny",
+        "last": "Osborne"
+      },
+      "company": "VISUALIX",
+      "email": "fanny.osborne@visualix.net",
+      "phone": "+1 (830) 496-3950",
+      "address": "722 Malbone Street, Trucksville, Hawaii, 2078",
+      "about": "Aliqua fugiat non magna fugiat aute duis ex. Adipisicing culpa aliquip quis pariatur velit enim tempor est aliqua eiusmod ad fugiat ad. Dolore quis duis cupidatat et anim magna.",
+      "registered": "Tuesday, May 22, 2018 9:38 AM",
+      "latitude": "-38.072945",
+      "longitude": "105.057508"
+    }
+  ]
+}

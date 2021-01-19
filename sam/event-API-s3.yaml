@@ -69,10 +69,7 @@ S3EventHandlerFn:
   Type: AWS::Serverless::Function
   Properties:
     FunctionName: !Sub '${AWS::StackName}-s3-event-handler'
-    CodeUri: src/
     Handler: s3_event_lambda.handler
-    Runtime: python3.8
-    Timeout: 30
     Events:
       EventRequestCreated:
         Type: S3
