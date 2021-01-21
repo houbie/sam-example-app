@@ -19,10 +19,14 @@ def s3_json_event_handler(func: Callable[[object], None]):
         for record in event['Records']:
             bucket = record['s3']['bucket']['name']
             key = urllib.parse.unquote_plus(record['s3']['object']['key'], encoding='utf-8')
+            logger.info({"message": "s3_json_event_handler", "bucket": bucket, "key": key})
             try:
                 s3_obj = s3_client.get_object(Bucket=bucket, Key=key)
                 s3_json = json.load(s3_obj['Body'])
-                return func(s3_json)
+                result = func(s3_json)
+                s3_client.copy_object(Bucket=bucket, Key=key.replace("in/", "out/"), CopySource=f"/{bucket}/{key}")
+                s3_client.delete_object(Bucket=bucket, Key=key)
+                return result
             except JSONDecodeError:
                 logger.exception(f"S3 object {key} in bucket {bucket} is not valid Json")
             except Exception as e:

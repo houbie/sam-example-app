@@ -10,9 +10,6 @@ EventConsumerFn:
           Path: /consumer-events
           Method: POST
           RestApiId: !Ref SamManagedApi
-    Environment:
-      Variables:
-        LOG_LEVEL: DEBUG
 EventConsumerLogGroup:
   Type: AWS::Logs::LogGroup
   DependsOn:

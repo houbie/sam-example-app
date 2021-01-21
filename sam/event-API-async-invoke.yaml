@@ -15,7 +15,6 @@ AsyncEventApiFn:
     Environment:
       Variables:
         ASYNC_HANDLER_FN: !Sub '${AWS::StackName}-async-event-handler'
-        LOG_LEVEL: DEBUG
 EsyncEventApiLogGroup:
   Type: AWS::Logs::LogGroup
   DependsOn:
@@ -33,7 +32,6 @@ AsyncEventHandlerFn:
     Environment:
       Variables:
         EVENT_CONSUMER_URL: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/{{ stage }}/consumer-events"
-        LOG_LEVEL: DEBUG
 AsyncEventHandlerLogGroup:
   Type: AWS::Logs::LogGroup
   DependsOn:

@@ -33,9 +33,7 @@ Resources:
 
 
 Outputs:
-  S3PostEventUrl:
-    Value: !Sub "https://${S3EventApi}.execute-api.${AWS::Region}.amazonaws.com/{{ stage }}/events-s3"
-  AsyncPostEventUrl:
-    Value: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/{{ stage }}/events-async"
-  EventConsumerUrl:
-    Value: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/{{ stage }}/consumer-events"
+  SamManagedApiUrl:
+    Value: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/{{ stage }}"
+  S3EventApiUrl:
+    Value: !Sub "https://${S3EventApi}.execute-api.${AWS::Region}.amazonaws.com/{{ stage }}"
