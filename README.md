@@ -90,7 +90,8 @@ Just run `pytest` in your virtualenv or run tests in your IDE (you have to confi
 ## Performance/load tests
 _test/locust_perf_test.py_ contains a simple load test that posts a small and a large payload both API gateways.
 This is to compare two possible architectures for async API gateway event handling.
-![Async API gateway event handling](docs/async_API_handker.png?raw=true "Async API gateway event handling")
+See [Architecture](#architecture)
+
 
 ## Cleanup
 
@@ -107,6 +108,8 @@ aws cloudformation delete-stack --stack-name sam-example-app
 With the _AWS Toolkit_ plugin, you can view/update lambda's, S3 files, cloudwatch logs...
 
 ## Managing your Python setup
+Note: still have to try out [PDM](https://pdm.fming.dev/), which works like npm. Maybe better then what's described below.
+
 There are lots of ways to install Python and the required tools.
 I had the best experience by installing _pyenv_ and _Poetry_ directly on my dev machine:
 * Install _pyenv_ via the [installer](https://github.com/pyenv/pyenv-installer) (or the [Windows version](https://github.com/pyenv-win/pyenv-win))
@@ -129,3 +132,11 @@ You can verify with `sam --version`.
 `which sam` will show something like _/Users/ihoubr/.pyenv/shims/sam_. You can use this to configure the
 _SAM CLI Executable_ in the AWS toolkit (Pycharm, Intellij, Visual Studio)
 
+## Architecture
+![Async API gateway event handling](docs/SAM_example_app.png?raw=true "Async API gateway event handling")
+
+What are we trying out here?
+* Async handling of API gateway requests (respond with 202 Accepted and handle request in backgrounc)
+    * One lambda invoking another asynchronously
+    * Redirect the API gateway event to an S3 bucket with a lambda listening to S3 events
+        * This makes generic error handling possible 
