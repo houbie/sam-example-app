@@ -100,4 +100,4 @@ venv.bak/
 .aws-sam
 src/requirements.txt
 /template.yaml
-/stack_output.ini
+/stack-output.ini

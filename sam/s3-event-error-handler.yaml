@@ -1,0 +1,17 @@
+S3EventErrorHandlerFn:
+  Type: AWS::Serverless::Function
+  Properties:
+    FunctionName: !Sub '${AWS::StackName}-s3-event-error-handler'
+    Handler: s3_event_error_handler_lambda.handler
+    Policies:
+      - S3CrudPolicy:
+          BucketName: '{{ env("USER") }}-sam-events'
+      - LambdaInvokePolicy:
+          FunctionName: !Sub '${AWS::StackName}-s3-event-handler'
+S3EventErrorHandlerLogGroup:
+  Type: AWS::Logs::LogGroup
+  DependsOn:
+    - S3EventErrorHandlerFn
+  Properties:
+    LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-s3-event-error-handler'
+    RetentionInDays: 3

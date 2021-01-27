@@ -30,6 +30,7 @@ Resources:
   {{ include("event-consumer.yaml") | indent(2) }}
   {{ include("event-API-s3.yaml") | indent(2) }}
   {{ include("event-API-async-invoke.yaml") | indent(2) }}
+  {{ include("s3-event-error-handler.yaml") | indent(2) }}
 
 
 Outputs:

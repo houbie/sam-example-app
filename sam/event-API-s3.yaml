@@ -85,6 +85,12 @@ S3EventHandlerFn:
     Environment:
       Variables:
         EVENT_CONSUMER_URL: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/{{ stage }}/consumer-events"
+    EventInvokeConfig:
+      MaximumRetryAttempts: 1
+      DestinationConfig:
+        OnFailure:
+          Type: Lambda
+          Destination: !GetAtt S3EventErrorHandlerFn.Arn
 S3EventHandlerLogGroup:
   Type: AWS::Logs::LogGroup
   DependsOn:

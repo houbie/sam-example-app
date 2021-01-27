@@ -10,7 +10,7 @@ from locust import HttpUser, task
 
 
 config = configparser.ConfigParser()
-config.read("stack_output.ini")
+config.read("stack-output.ini")
 sam_managed_api_url = config["DEFAULT"]["sam_managed_api_url"]
 s3_event_api_url = config["DEFAULT"]["s3_event_api_url"]
 

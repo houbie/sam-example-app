@@ -6,7 +6,7 @@ from typing import Callable
 
 from aws_lambda_powertools import Logger
 
-from lambda_lib.s3 import s3_client
+from lambda_lib.s3 import s3_client, move
 from lambda_lib.util import decompress_base64
 
 logger = Logger()
@@ -24,8 +24,8 @@ def s3_json_event_handler(func: Callable[[object], None]):
                 s3_obj = s3_client.get_object(Bucket=bucket, Key=key)
                 s3_json = json.load(s3_obj['Body'])
                 result = func(s3_json)
-                s3_client.copy_object(Bucket=bucket, Key=key.replace("in/", "out/"), CopySource=f"/{bucket}/{key}")
-                s3_client.delete_object(Bucket=bucket, Key=key)
+                logger.info({"message": f"moving {key} to out"})
+                move(bucket, key, "out")
                 return result
             except JSONDecodeError:
                 logger.exception(f"S3 object {key} in bucket {bucket} is not valid Json")
