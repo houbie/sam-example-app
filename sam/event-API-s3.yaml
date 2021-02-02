@@ -14,6 +14,9 @@ S3EventApi:
   Type: AWS::ApiGateway::RestApi
   Properties:
     Name: !Sub '${AWS::StackName}-s3-event-api'
+    EndpointConfiguration:
+      Types:
+        - REGIONAL
 
 S3EventResource:
   Type: AWS::ApiGateway::Resource
@@ -40,6 +43,7 @@ S3EventPostMethod:
       PassthroughBehavior: WHEN_NO_MATCH
       RequestParameters:
         integration.request.header.Content-Type: method.request.header.Content-Type
+        integration.request.header.x-amz-meta-requestid: context.requestId # TODO expect this to add requestid to metadata of S3 object, but that does not happen
         integration.request.path.requestId: context.requestId
       Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:s3:path/${SamAppBucket}/in/{requestId}-request.json'
     MethodResponses:
@@ -81,7 +85,10 @@ S3EventHandlerFn:
               Rules:
                 - { Name: prefix, Value: in/ }
     Policies:
-      - 'arn:aws:iam::aws:policy/AmazonS3FullAccess'
+      - S3CrudPolicy:
+          BucketName: '{{ env("USER") }}-sam-events'
+      - DynamoDBCrudPolicy:
+          TableName: !Ref S3RequestTable
     Environment:
       Variables:
         EVENT_CONSUMER_URL: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/{{ stage }}/consumer-events"

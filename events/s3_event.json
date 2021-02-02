@@ -27,8 +27,8 @@
           "arn": "arn:aws:s3:::houbie-sam-events"
         },
         "object": {
-          "key": "in/b24b6748-1a00-46e5-af04-6109b4504056-request.json",
-          "size": 20,
+          "key": "test/a7ac551d-4d98-4e22-a3be-e9826716e2f3-request.json",
+          "size": 29,
           "eTag": "c4739e97d2e782ab9142b7cad4e36383",
           "sequencer": "005FCE4697D2D5B6FF"
         }

@@ -8,7 +8,7 @@ tracer = Tracer()
 
 
 @tracer.capture_lambda_handler
-@s3_json_event_handler
+@s3_json_event_handler("sam-example-s3-flow", functional_key_path="name")
 def handler(event):
     logger.info({"message": "Received Json from S3"})
     return process_event(event)

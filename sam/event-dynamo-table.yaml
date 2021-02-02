@@ -1,0 +1,15 @@
+S3RequestTable:
+  Type: AWS::DynamoDB::Table
+  Properties:
+    TableName: !Sub '${AWS::StackName}-s3-requests'
+    AttributeDefinitions:
+      - AttributeName: id
+        AttributeType: S
+    KeySchema:
+      - AttributeName: id
+        KeyType: HASH
+    ProvisionedThroughput:
+      ReadCapacityUnits: 5
+      WriteCapacityUnits: 5
+    StreamSpecification:
+      StreamViewType: NEW_AND_OLD_IMAGES

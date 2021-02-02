@@ -11,6 +11,11 @@ Globals:
     Tracing: Active
     Runtime: python3.8
     CodeUri: src/
+    Environment:
+      Variables:
+        S3_REQUESTS_TABLE: !Ref S3RequestTable
+  Api:
+    EndpointConfiguration: REGIONAL
 
 Resources:
 
@@ -27,6 +32,7 @@ Resources:
     Properties:
       BucketName: {{ env("USER") }}-sam-events
 
+  {{ include("event-dynamo-table.yaml") | indent(2) }}
   {{ include("event-consumer.yaml") | indent(2) }}
   {{ include("event-API-s3.yaml") | indent(2) }}
   {{ include("event-API-async-invoke.yaml") | indent(2) }}

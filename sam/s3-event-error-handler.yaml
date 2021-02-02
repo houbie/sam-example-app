@@ -8,6 +8,8 @@ S3EventErrorHandlerFn:
           BucketName: '{{ env("USER") }}-sam-events'
       - LambdaInvokePolicy:
           FunctionName: !Sub '${AWS::StackName}-s3-event-handler'
+      - DynamoDBCrudPolicy:
+          TableName: !Ref S3RequestTable
 S3EventErrorHandlerLogGroup:
   Type: AWS::Logs::LogGroup
   DependsOn:

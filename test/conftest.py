@@ -3,6 +3,15 @@ import json
 import os
 
 import pytest
+import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "../src"))
+sys.path.append(os.path.dirname(__file__))
+
+from pytest_dynamodb import factories
+from pytest_dynamodb.port import get_port
+
+from lambda_lib.s3_request import S3Request
 
 EVENTS_PATH = "../events"
 JSON_EXT = ".json"
@@ -24,7 +33,18 @@ def load_event():
 
 @pytest.fixture()
 def json_stream():
-    def to_stream(obj):
+    def to_stream(obj: dict) -> io.BytesIO:
         return io.BytesIO(json.dumps(obj).encode())
 
     return to_stream
+
+
+port = get_port(None)
+dynamodb_proc = factories.dynamodb_proc(os.path.join(os.path.dirname(__file__), "../.dynamodb"), port=port)
+
+
+@pytest.fixture()
+def dynamo(dynamodb):
+    S3Request.Meta.host = f"http://localhost:{port}"
+    S3Request.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    return dynamodb

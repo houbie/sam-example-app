@@ -90,6 +90,7 @@ Just run `pytest` in your virtualenv or run tests in your IDE (you have to confi
 ## Performance/load tests
 _test/locust_perf_test.py_ contains a simple load test that posts a small and a large payload both API gateways.
 This is to compare two possible architectures for async API gateway event handling.
+Example run: `locust -f test/locust_load_tst.py -u 5 -r 5 --headless -t 30s --host=http://localhost:5000 LargePayload`
 See [Architecture](#architecture)
 
 
