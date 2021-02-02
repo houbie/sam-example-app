@@ -1,4 +1,5 @@
 {% macro async_s3_api(name, bucket, path_part) %}
+
 {{ name }}ApiRole:
   Type: AWS::IAM::Role
   Properties:
@@ -9,7 +10,16 @@
           Principal:
             Service: [ apigateway.amazonaws.com ]
           Action: [ 'sts:AssumeRole' ]
-    ManagedPolicyArns: [ 'arn:aws:iam::aws:policy/AmazonS3FullAccess' ]
+    Policies:
+      - PolicyName: {{ name }}ApiRolePolicy
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                  - s3:PutObject
+              Resource:
+                  - !Sub 'arn:aws:s3:::${ {{ bucket }} }/*'
 
 {{ name }}Api:
   Type: AWS::ApiGateway::RestApi
