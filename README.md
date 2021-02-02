@@ -15,9 +15,12 @@ We use [poetry](https://python-poetry.org/) for dependency management an
 See the section about _Managing your Python setup_
 
 If you don't want to install these tools on your dev machine, you can install them in a virtual environment
-via pip (and just delete the virtual environment when you don't need them any more).
+via pip (and just delete the virtual environment when you don't need them anymore).
 
 ## Build and deploy the application
+* activate your virtual environment
+  * automatically done in Intellij/Pycharm terminals
+  * or start a Poertry shell `poetry shell`
 
 * Build preparation:
 ```bash
@@ -141,3 +144,9 @@ What are we trying out here?
     * One lambda invoking another asynchronously
     * Redirect the API gateway event to an S3 bucket with a lambda listening to S3 events
         * This makes generic error handling possible 
+
+## Troubleshooting
+`AttributeError: 'NoneType' object has no attribute 'get'`
+This can have multiple causes:
+* the virtual environment is not active
+* the generated _template.yaml_ is not valid: check that the yaml indentation is OK
