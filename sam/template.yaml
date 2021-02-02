@@ -1,46 +1,30 @@
-{% set stage = env("STAGE", default="dev") %}
-{% from "sam/macros.j2" import include with context %}
+{% from "sam/macro/util.j2" import include with context %}
 
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: AWS SAM example application
 
+Parameters:
+  {{ include("parameters.yaml") | indent(2) }}
+
 Globals:
-  Function:
-    Timeout: 30
-    Tracing: Active
-    Runtime: python3.8
-    CodeUri: src/
-    Environment:
-      Variables:
-        S3_REQUESTS_TABLE: !Ref S3RequestTable
-  Api:
-    EndpointConfiguration: REGIONAL
+  {{ include("globals.yaml") | indent(2) }}
 
 Resources:
-
-  # note: only the first Api in the template will be exposed by 'sam local start-api'
-  SamManagedApi:
-    Type: AWS::Serverless::Api
-    Properties:
-      StageName: {{ stage }}
-      TracingEnabled: true
-
-  SamAppBucket:
-    Type: AWS::S3::Bucket
-    DeletionPolicy: Delete
-    Properties:
-      BucketName: {{ env("USER") }}-sam-events
-
-  {{ include("event-dynamo-table.yaml") | indent(2) }}
+  {{ include("buckets.yaml") | indent(2) }}
+  {{ include("tables.yaml") | indent(2) }}
+   # note: only the first Api in the template will be exposed by 'sam local start-api'
+  {{ include("api-gateway.yaml") | indent(2) }}
   {{ include("event-consumer.yaml") | indent(2) }}
-  {{ include("event-API-s3.yaml") | indent(2) }}
   {{ include("event-API-async-invoke.yaml") | indent(2) }}
+
+  # REST API gateway with S3 integration
+  {{ include("event-API-s3.yaml") | indent(2) }}
   {{ include("s3-event-error-handler.yaml") | indent(2) }}
 
 
 Outputs:
   SamManagedApiUrl:
-    Value: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/{{ stage }}"
+    Value: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/${stage}"
   S3EventApiUrl:
-    Value: !Sub "https://${S3EventApi}.execute-api.${AWS::Region}.amazonaws.com/{{ stage }}"
+    Value: !Sub "https://${S3EventApi}.execute-api.${AWS::Region}.amazonaws.com/${stage}"

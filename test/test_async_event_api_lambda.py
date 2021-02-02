@@ -30,7 +30,7 @@ def test_handler(load_event, mocker: MockerFixture):
                                          'headers': {'Content-Type': 'application/json'}, 'statusCode': 200}
 
     invoke_lambda.assert_called_with(FunctionName="ASYNC_HANDLER_FN_NOT_SET", InvocationType="Event",
-                                     Payload=f'{compress_base64(api_gw_event["body"])}')
+                                     Payload=f'"{compress_base64(api_gw_event["body"])}"')
 
     http_post.assert_called_with(os.environ["EVENT_CONSUMER_URL"], json={"MESSAGE": "hello world"})
 
@@ -48,4 +48,4 @@ def test_handler_unwrapped(mocker: MockerFixture):
     assert unwrapped_handler(event) == {"message": "async invoked lambda ASYNC_HANDLER_FN_NOT_SET"}
 
     invoke_lambda.assert_called_with(FunctionName="ASYNC_HANDLER_FN_NOT_SET", InvocationType="Event",
-                                     Payload=f'{compress_base64(json.dumps(event))}')
+                                     Payload=f'"{compress_base64(json.dumps(event))}"')

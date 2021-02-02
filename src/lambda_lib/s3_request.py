@@ -20,6 +20,7 @@ class S3Request(Model):
     bucket = UnicodeAttribute(attr_name="bucket")
     s3_key = UnicodeAttribute(attr_name="s3_key")
     source_ip_address = UnicodeAttribute(null=True, attr_name="sourceIp")
+    trace_parent = UnicodeAttribute(null=True, attr_name="trace")
     received_time = UTCDateTimeAttribute(attr_name="received")
     processed_time = UTCDateTimeAttribute(null=True, attr_name="processed")
     error = UnicodeAttribute(null=True)

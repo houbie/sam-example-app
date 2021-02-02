@@ -15,4 +15,4 @@ def move(bucket: str, key: str, destination_folder: str):
 
 def get_json(bucket: str, key: str) -> object:
     s3_obj = s3_client.get_object(Bucket=bucket, Key=key)
-    return json.load(s3_obj['Body'])
+    return json.load(s3_obj['Body']), s3_obj["Metadata"]

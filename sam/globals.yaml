@@ -1,0 +1,10 @@
+Function:
+  Timeout: 30
+  Tracing: Active
+  Runtime: python3.8
+  CodeUri: src/
+  Environment:
+    Variables:
+      S3_REQUESTS_TABLE: !Ref S3RequestTable
+Api:
+  EndpointConfiguration: REGIONAL

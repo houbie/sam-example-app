@@ -10,7 +10,7 @@ def test_handler(load_event, dynamo, mocker: MockerFixture):
     s3_event = load_event("s3_event")
 
     s3_get_json = mocker.patch("lambda_lib.s3.get_json")
-    s3_get_json.return_value = {"name": "foobar"}
+    s3_get_json.return_value = {"name": "foobar"}, {"traceparent": "my-trace"}
     mocker.patch("lambda_lib.s3.move")
 
     http_post = mocker.patch("lambda_lib.power_requests.http.post")
@@ -19,4 +19,5 @@ def test_handler(load_event, dynamo, mocker: MockerFixture):
     http_post.assert_called_with(os.environ["EVENT_CONSUMER_URL"], json={"NAME": "foobar"})
 
     req = S3Request.scan(S3Request.functional_key == "foobar").next()
+    assert req.trace_parent == "my-trace"
     assert req.processed_time

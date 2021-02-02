@@ -31,7 +31,7 @@ AsyncEventHandlerFn:
     Handler: async_event_lambda.handler
     Environment:
       Variables:
-        EVENT_CONSUMER_URL: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/{{ stage }}/consumer-events"
+        EVENT_CONSUMER_URL: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/${stage}/consumer-events"
 AsyncEventHandlerLogGroup:
   Type: AWS::Logs::LogGroup
   DependsOn:

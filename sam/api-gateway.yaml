@@ -1,0 +1,6 @@
+# note: only the first Api in the template will be exposed by 'sam local start-api'
+SamManagedApi:
+  Type: AWS::Serverless::Api
+  Properties:
+    StageName: !Ref stage
+    TracingEnabled: true

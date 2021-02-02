@@ -1,0 +1,99 @@
+{% macro async_s3_api(name, bucket, path_part) %}
+{{ name }}ApiRole:
+  Type: AWS::IAM::Role
+  Properties:
+    RoleName: !Sub '${AWS::StackName}-s3-event-api-role'
+    AssumeRolePolicyDocument:
+      Statement:
+        - Effect: Allow
+          Principal:
+            Service: [ apigateway.amazonaws.com ]
+          Action: [ 'sts:AssumeRole' ]
+    ManagedPolicyArns: [ 'arn:aws:iam::aws:policy/AmazonS3FullAccess' ]
+
+{{ name }}Api:
+  Type: AWS::ApiGateway::RestApi
+  Properties:
+    Name: !Sub '${AWS::StackName}-s3-event-api'
+    EndpointConfiguration:
+      Types:
+        - REGIONAL
+
+{{ name }}Resource:
+  Type: AWS::ApiGateway::Resource
+  Properties:
+    RestApiId: !Ref {{ name }}Api
+    ParentId: !GetAtt {{ name }}Api.RootResourceId
+    PathPart: {{ path_part }}
+
+{% set method = post_method(name, bucket) %}
+{% set method_hash = method | hashed %}
+{{ method }}
+
+{# Changing the PostMethod does not trigger the deployment to be updated
+   Making the method_hash part of the id, will replace the deployment everytime the PostMethod is changed  #}
+{{ name }}ApiGatewayDeployment{{ method_hash }}:
+  Type: AWS::ApiGateway::Deployment
+  Properties:
+    RestApiId: !Ref {{ name }}Api
+    StageName: !Sub '{{ method_hash }}${stage}'
+  DependsOn: [ {{ name }}PostMethod ]
+
+{{ name }}ApiStage:
+  Type: AWS::ApiGateway::Stage
+  Properties:
+    StageName: !Ref stage
+    RestApiId: !Ref {{ name }}Api
+    DeploymentId: !Ref {{ name }}ApiGatewayDeployment{{ method | hashed }}
+    TracingEnabled: true
+{% endmacro %}
+
+{% macro post_method(name, bucket) %}
+{{ name }}PostMethod:
+  Type: AWS::ApiGateway::Method
+  Properties:
+    ApiKeyRequired: false
+    HttpMethod: POST
+    AuthorizationType: NONE
+    Integration:
+      Type: AWS
+      Credentials: !GetAtt {{ name }}ApiRole.Arn
+      IntegrationHttpMethod: PUT
+      IntegrationResponses:
+        - StatusCode: '201'
+          SelectionPattern: '2\d{2}'
+          ResponseTemplates:
+            application/json: '{"requestId": "$context.requestId"}'
+      PassthroughBehavior: WHEN_NO_MATCH
+      RequestParameters:
+        integration.request.header.Content-Type: method.request.header.Content-Type
+        # we can save headers as as meta data on the S3 object
+        integration.request.header.x-amz-meta-traceparent: method.request.header.traceparent
+        integration.request.path.requestId: context.requestId
+# we could save all the details of the request along with the request body by using a template:
+#      RequestTemplates:
+#        "application/json": '{
+#          "body":$input.body,
+#          "params" : {
+#             #foreach($type in $allParams.keySet())
+#             #set($params = $allParams.get($type))
+#             "$type" : {
+#               #foreach($paramName in $params.keySet())
+#               "$paramName" : "$util.escapeJavaScript($params.get($paramName))"
+#               #if($foreach.hasNext),#end
+#               #end
+#             }
+#             #if($foreach.hasNext),#end
+#             #end
+#           }
+#          }'
+
+      Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:s3:path/${ {{ bucket }} }/in/{requestId}-request.json'
+    MethodResponses:
+      - StatusCode: 201
+    RequestParameters:
+      method.request.header.Content-Type: false
+      method.request.header.traceparent: false
+    ResourceId: !Ref {{ name }}Resource
+    RestApiId: !Ref {{ name }}Api
+{% endmacro %}

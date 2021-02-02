@@ -27,7 +27,7 @@ def s3_json_event_handler(process_name: str, functional_key_path: str) -> Callab
                 bucket = record['s3']['bucket']['name']
                 key = urllib.parse.unquote_plus(record['s3']['object']['key'], encoding='utf-8')
                 try:
-                    body = s3.get_json(bucket, key)
+                    body, meta = s3.get_json(bucket, key)
                     matches = jsonpath_expr.find(body)
                     functional_key = matches[0].value if matches else f"{functional_key_path} not found"
                     logger.structure_logs(append=True, functional_key=functional_key)
@@ -38,6 +38,7 @@ def s3_json_event_handler(process_name: str, functional_key_path: str) -> Callab
                                     bucket=bucket,
                                     s3_key=key,
                                     source_ip_address=record["requestParameters"]["sourceIPAddress"],
+                                    trace_parent=meta.get("traceparent"),
                                     received_time=dateutil.parser.parse(record["eventTime"]))
                     req.save()
                     result = func(body)
