@@ -46,7 +46,7 @@
   Type: AWS::ApiGateway::Deployment
   Properties:
     RestApiId: !Ref {{ name }}Api
-    StageName: !Sub '{{ method_hash }}${stage}'
+    StageName: ''
   DependsOn: [ {{ name }}PostMethod ]
 
 {{ name }}ApiStage:
@@ -80,7 +80,8 @@
         # we can save headers as as meta data on the S3 object
         integration.request.header.x-amz-meta-traceparent: method.request.header.traceparent
         integration.request.path.requestId: context.requestId
-# we could save all the details of the request along with the request body by using a template:
+# we could save all the request params (query, path, headers) along with the request body by using a template.
+# the AWS console provides a 'Method Request passthrough' template that forwards all the request details
 #      RequestTemplates:
 #        "application/json": '{
 #          "body":$input.body,
