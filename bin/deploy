@@ -8,11 +8,15 @@ import subprocess
 parser = argparse.ArgumentParser()
 parser.add_argument("--profile", help="Use a specific profile from your credential file to get AWS credentials.")
 parser.add_argument("--region", help="Set the AWS Region of the service (e.g. us-east-1).")
+parser.add_argument("--s3-bucket", help="The name of the S3 bucket where this command uploads your CloudFormation "
+                                        "template. Thisis required the deployments of templates sized greater than "
+                                        "51,200 bytes")
 args = parser.parse_args()
 
 deploy_cmd = "sam deploy "
 deploy_cmd += " --profile " + args.profile if args.profile else ''
 deploy_cmd += " --region " + args.region if args.region else ''
+deploy_cmd += " --s3-bucket " + args.s3_bucket if args.s3_bucket else ''
 os.system(deploy_cmd)
 
 get_stack_output_cmd = "aws cloudformation describe-stacks --stack-name sam-example-app \

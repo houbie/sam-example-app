@@ -7,10 +7,10 @@ from lambda_lib.lambda_handler_decorators import rest_api_handler
 from lambda_lib.lmbda import async_invoke
 
 logger = Logger()
-tracer = Tracer()
+xray_tracer = Tracer()
 
 
-@tracer.capture_lambda_handler
+@xray_tracer.capture_lambda_handler
 @rest_api_handler
 def handler(event):
     logger.info({"message": "Received Json from API GW", "event": event})

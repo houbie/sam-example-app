@@ -372,6 +372,64 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "opentelemetry-api"
+version = "0.17b0"
+description = "OpenTelemetry Python API"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
+name = "opentelemetry-instrumentation"
+version = "0.17b0"
+description = "Instrumentation Tools & Auto Instrumentation for OpenTelemetry Python"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+opentelemetry-api = "0.17b0"
+wrapt = ">=1.0.0,<2.0.0"
+
+[[package]]
+name = "opentelemetry-instrumentation-requests"
+version = "0.17b0"
+description = "OpenTelemetry requests instrumentation"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+opentelemetry-api = "0.17b0"
+opentelemetry-instrumentation = "0.17b0"
+requests = ">=2.0,<3.0"
+
+[package.extras]
+test = ["opentelemetry-test (==0.17b0)", "httpretty (>=1.0,<2.0)"]
+
+[[package]]
+name = "opentelemetry-propagator-b3"
+version = "0.17b0"
+description = "OpenTelemetry B3 Propagator"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+opentelemetry-api = "0.17b0"
+
+[[package]]
+name = "opentelemetry-sdk"
+version = "0.17b0"
+description = "OpenTelemetry Python SDK"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+opentelemetry-api = "0.17b0"
+
+[[package]]
 name = "packaging"
 version = "20.9"
 description = "Core utilities for Python packages"
@@ -648,7 +706,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "134fb9fcab3adfb308d8db29dbbc2946ef1447c7d5ceb9102b79e073673ad26a"
+content-hash = "b74678ac0aa69d6265d1aa3f14b289d01bda9a07fe7af3bbaf3e2874512947c7"
 
 [metadata.files]
 atomicwrites = [
@@ -982,6 +1040,26 @@ msgpack = [
     {file = "msgpack-1.0.2-cp39-cp39-win32.whl", hash = "sha256:c747c0cc08bd6d72a586310bda6ea72eeb28e7505990f342552315b229a19b33"},
     {file = "msgpack-1.0.2-cp39-cp39-win_amd64.whl", hash = "sha256:d8167b84af26654c1124857d71650404336f4eb5cc06900667a493fc619ddd9f"},
     {file = "msgpack-1.0.2.tar.gz", hash = "sha256:fae04496f5bc150eefad4e9571d1a76c55d021325dcd484ce45065ebbdd00984"},
+]
+opentelemetry-api = [
+    {file = "opentelemetry-api-0.17b0.tar.gz", hash = "sha256:a28664a00d4025ee9f9c17b78f2d1a14bd8f540fd21fdccb2cdf832e7506e2eb"},
+    {file = "opentelemetry_api-0.17b0-py3-none-any.whl", hash = "sha256:02e5d7c0ee2efdf946495ead9ba0b9812537bd6c872764ade874aa7d71095a45"},
+]
+opentelemetry-instrumentation = [
+    {file = "opentelemetry-instrumentation-0.17b0.tar.gz", hash = "sha256:2c9b76b65325129f998e64fc12baa892146c0010d198d86d65ed5bc5f1f82011"},
+    {file = "opentelemetry_instrumentation-0.17b0-py3-none-any.whl", hash = "sha256:865fbfc12e58a94820dd6ae517ee2fd3c85449047e59551e39c118ae32afbfe4"},
+]
+opentelemetry-instrumentation-requests = [
+    {file = "opentelemetry-instrumentation-requests-0.17b0.tar.gz", hash = "sha256:97f95e704929d6d024b4989c1c34d4d0774556dc9ede1619f084af034284266d"},
+    {file = "opentelemetry_instrumentation_requests-0.17b0-py3-none-any.whl", hash = "sha256:7f79170ee504780155152c756c4cd2c544b7ca8688ec1924fb082fa7c4bb8714"},
+]
+opentelemetry-propagator-b3 = [
+    {file = "opentelemetry-propagator-b3-0.17b0.tar.gz", hash = "sha256:f030351456e9d074811854e2c3ce5d431965d00c51d8c628ceafdf31949cff02"},
+    {file = "opentelemetry_propagator_b3-0.17b0-py3-none-any.whl", hash = "sha256:d54892af9babad58ed5687dc15f5b1b9bad866e8dbaf1e4d0351bf70e0335c82"},
+]
+opentelemetry-sdk = [
+    {file = "opentelemetry-sdk-0.17b0.tar.gz", hash = "sha256:bc56f049cf0b950ee9bf8cd2a8246b8fcf62de18800886850096a9e44311c462"},
+    {file = "opentelemetry_sdk-0.17b0-py3-none-any.whl", hash = "sha256:9d9b277049f36ff12605c1c367d0e0ad11fe179a56cc434f831b22933212440e"},
 ]
 packaging = [
     {file = "packaging-20.9-py2.py3-none-any.whl", hash = "sha256:67714da7f7bc052e064859c05c595155bd1ee9f69f76557e21f051443c20947a"},

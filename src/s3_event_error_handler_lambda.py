@@ -7,10 +7,10 @@ from lambda_lib.s3_request import S3Request
 MAX_RETRIES = 1
 
 logger = Logger()
-tracer = Tracer()
+xray_tracer = Tracer()
 
 
-@tracer.capture_lambda_handler
+@xray_tracer.capture_lambda_handler
 def handler(event, context):
     logger.info({"message": "lambda failure event received", "event": event})
     request_payload = event["requestPayload"]

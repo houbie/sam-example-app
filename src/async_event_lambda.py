@@ -4,10 +4,10 @@ from event_handler import process_event
 from lambda_lib.lambda_handler_decorators import compressed_json_event_handler
 
 logger = Logger()
-tracer = Tracer()
+xray_tracer = Tracer()
 
 
-@tracer.capture_lambda_handler
+@xray_tracer.capture_lambda_handler
 @compressed_json_event_handler
 def handler(event):
     logger.info({"message": "Received Json from Async invoke", "event": event})

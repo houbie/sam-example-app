@@ -3,7 +3,6 @@ version = 0.1
 [default.deploy]
 [default.deploy.parameters]
 stack_name = "sam-example-app"
-s3_bucket = "houbie-cf-stacks"
 s3_prefix = "stack"
 region = "eu-west-1"
 capabilities = "CAPABILITY_NAMED_IAM"

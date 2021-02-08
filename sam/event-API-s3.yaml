@@ -20,7 +20,7 @@ S3EventHandlerFn:
                 - { Name: prefix, Value: in/ }
     Policies:
       - S3CrudPolicy:
-          BucketName: '{{ env("USER") }}-sam-events'
+          BucketName: '{{ env("USER").lower() }}-sam-events'
       - DynamoDBCrudPolicy:
           TableName: !Ref S3RequestTable
     Environment:

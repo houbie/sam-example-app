@@ -2,4 +2,4 @@ SamAppBucket:
   Type: AWS::S3::Bucket
   DeletionPolicy: Delete
   Properties:
-    BucketName: {{ env("USER") }}-sam-events
+    BucketName: {{ env("USER").lower() }}-sam-events

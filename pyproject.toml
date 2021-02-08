@@ -12,6 +12,10 @@ aws-lambda-powertools = "^1.9.1"
 pynamodb = "^5.0.0"
 jsonpath-ng = "^1.5.2"
 python-dateutil = "^2.8.1"
+opentelemetry-api = "^0.17b0"
+opentelemetry-propagator-b3 = "^0.17b0"
+opentelemetry-sdk = "^0.17b0"
+opentelemetry-instrumentation-requests = "^0.17b0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.1"

@@ -78,7 +78,11 @@
       RequestParameters:
         integration.request.header.Content-Type: method.request.header.Content-Type
         # we can save headers as as meta data on the S3 object
-        integration.request.header.x-amz-meta-traceparent: method.request.header.traceparent
+        integration.request.header.x-amz-meta-b3: method.request.header.b3
+        integration.request.header.x-amz-meta-x-b3-traceid: method.request.header.x-b3-traceid
+        integration.request.header.x-amz-meta-x-b3-spanid: method.request.header.x-b3-spanid
+        integration.request.header.x-amz-meta-x-b3-sampled: method.request.header.x-b3-sampled
+        integration.request.header.x-amz-meta-x-b3-flags: method.request.header.x-b3-flags
         integration.request.path.requestId: context.requestId
 # we could save all the request params (query, path, headers) along with the request body by using a template.
 # the AWS console provides a 'Method Request passthrough' template that forwards all the request details
@@ -104,7 +108,11 @@
       - StatusCode: 201
     RequestParameters:
       method.request.header.Content-Type: false
-      method.request.header.traceparent: false
+      method.request.header.b3: false
+      method.request.header.x-b3-traceid: false
+      method.request.header.x-b3-spanid: false
+      method.request.header.x-b3-sampled: false
+      method.request.header.x-b3-flags: false
     ResourceId: !Ref {{ name }}Resource
     RestApiId: !Ref {{ name }}Api
 {% endmacro %}

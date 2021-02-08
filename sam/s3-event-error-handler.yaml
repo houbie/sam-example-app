@@ -5,7 +5,7 @@ S3EventErrorHandlerFn:
     Handler: s3_event_error_handler_lambda.handler
     Policies:
       - S3CrudPolicy:
-          BucketName: '{{ env("USER") }}-sam-events'
+          BucketName: '{{ env("USER").lower() }}-sam-events'
       - LambdaInvokePolicy:
           FunctionName: !Sub '${AWS::StackName}-s3-event-handler'
       - DynamoDBCrudPolicy:

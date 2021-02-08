@@ -46,6 +46,9 @@ _bin/build.sh_ contains all the build steps.
 
 _bin/deploy_ deploys the application and writes the outpu urls to stack_output.ini.
 
+`NOTE`: add `--profile my-own-profile` to the deploy command when not using the default AWS profile's credentials
+`NOTE`: add `--s3-bucket my-deployment-bucket` to specify the bucket where sam will upload the deployment files.
+
 ## Use the SAM CLI to build and test locally
 
 The SAM CLI installs dependencies defined in `src/requirements.txt`, creates a deployment package, and saves it
@@ -106,6 +109,8 @@ The S3 bucket created by the stack needs to be emptied before stack deletion.
 aws s3 rm s3://${USER}-sam-events --recursive
 aws cloudformation delete-stack --stack-name sam-example-app
 ```
+
+`NOTE`: add `--profile my-own-profile` to the deploy command when not using the default AWS profile's credentials
 
 ## Intellij / Pycharm
 

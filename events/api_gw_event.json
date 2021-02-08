@@ -31,7 +31,8 @@
     "X-Amz-Cf-Id": "cDehVQoZnx43VYQb9j2-nvCh-9z396Uhbp027Y2JvkCPNLmGJHqlaA==",
     "X-Forwarded-For": "127.0.0.1, 127.0.0.2",
     "X-Forwarded-Port": "443",
-    "X-Forwarded-Proto": "https"
+    "x-b3-traceid": "9dd1c5a7ffaca76c730c81df5d474c41",
+    "x-b3-spanid": "4aedd10f18bffc24"
   },
   "requestContext": {
     "accountId": "123456789012",
