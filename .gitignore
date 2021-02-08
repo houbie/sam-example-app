@@ -102,3 +102,4 @@ src/requirements.txt
 /template.yaml
 /stack-output.ini
 /.dynamodb/
+/.python-version
