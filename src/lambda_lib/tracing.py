@@ -74,6 +74,7 @@ propagators.set_global_textmap(B3Format())
 def start_root_span(name: str, trace_carrier: dict, kind: SpanKind = SpanKind.SERVER,
                     **kwargs) -> typing.Iterator["Span"]:
     lower_case_carrier = {key.lower(): value for key, value in trace_carrier.items()}
+    lower_case_carrier["x-b3-sampled"] = "1"  # force sampling
     ctx = propagators.extract(DictGetter(), lower_case_carrier)
     with tracer.start_as_current_span(name, context=ctx, kind=kind, **kwargs) as span:
         yield span

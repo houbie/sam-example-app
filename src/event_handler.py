@@ -1,8 +1,10 @@
 import os
 
 from aws_lambda_powertools import Logger
+from opentelemetry.trace import SpanKind
 
 from lambda_lib.power_requests import http
+from lambda_lib.tracing import tracer
 
 logger = Logger()
 
@@ -20,7 +22,9 @@ def process_event(event):
     transformed = transform(event)
     url = os.environ.get("EVENT_CONSUMER_URL", "EVENT_CONSUMER_URL_NOT_SET")
     logger.debug({"message": f"POST event to {url}", "event": event})
-    http.post(url, json=transformed)
+    with tracer.start_as_current_span("child-span", kind=SpanKind.CLIENT) as span:
+        span.name = "invoke event consumer"
+        http.post(url, json=transformed)
     return "Successfully processed event"
 
 
