@@ -22,7 +22,7 @@ S3EventHandlerFn:
       - S3CrudPolicy:
           BucketName: '{{ env("USER").lower() }}-sam-events'
       - DynamoDBCrudPolicy:
-          TableName: !Ref S3RequestTable
+          TableName: !Ref EventLogTable
     Environment:
       Variables:
         EVENT_CONSUMER_URL: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/${stage}/consumer-events"

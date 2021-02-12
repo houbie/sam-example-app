@@ -1,7 +1,7 @@
-S3RequestTable:
+EventLogTable:
   Type: AWS::DynamoDB::Table
   Properties:
-    TableName: !Sub '${AWS::StackName}-s3-requests'
+    TableName: !Sub '${AWS::StackName}-event-log'
     AttributeDefinitions:
       - AttributeName: id
         AttributeType: S

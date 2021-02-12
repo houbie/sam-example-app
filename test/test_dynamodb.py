@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from lambda_lib.s3_request import S3Request
+from lambda_lib.event_log import EventLog
 
 
 def test_crud(dynamo):
@@ -10,16 +10,16 @@ def test_crud(dynamo):
     # Put an item
     # Get the item and check the content of this item
     """
-    req = S3Request("some-id", process_name="some_process", bucket="bucket_arn", s3_key="s3_key",
-                    received_time=datetime.now(timezone.utc))
-    req.save()
+    event_log = EventLog("some-id", process_name="some_process", bucket="bucket_arn", s3_key="s3_key",
+                   received_time=datetime.now(timezone.utc))
+    event_log.save()
 
-    req2 = S3Request.get("some-id")
-    req2.update(actions=[S3Request.processed_time.set(datetime.now(timezone.utc))])
+    event_log2 = EventLog.get("some-id")
+    event_log2.update(actions=[EventLog.processed_time.set(datetime.now(timezone.utc))])
 
-    req.refresh()
+    event_log.refresh()
 
-    assert req.processed_time <= datetime.now(timezone.utc)
+    assert event_log.processed_time <= datetime.now(timezone.utc)
 
 
 def test_unmarshal():
@@ -64,6 +64,6 @@ def test_unmarshal():
         ]
     }
 
-    req = S3Request.from_raw_data(dynamo_event["Records"][0]["dynamodb"]["NewImage"])
+    req = EventLog.from_raw_data(dynamo_event["Records"][0]["dynamodb"]["NewImage"])
     assert req.id == "some-id"
     assert req.bucket == "bucket_arn"

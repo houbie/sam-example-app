@@ -9,7 +9,7 @@ S3EventErrorHandlerFn:
       - LambdaInvokePolicy:
           FunctionName: !Sub '${AWS::StackName}-s3-event-handler'
       - DynamoDBCrudPolicy:
-          TableName: !Ref S3RequestTable
+          TableName: !Ref EventLogTable
 S3EventErrorHandlerLogGroup:
   Type: AWS::Logs::LogGroup
   DependsOn:

@@ -9,7 +9,7 @@ xray_tracer = Tracer()
 
 @xray_tracer.capture_lambda_handler
 @rest_api_handler
-def handler(event):
+def handler(event, *_):
     trace.get_current_span().set_attribute("name", event.get("NAME", "no name provided"))
     logger.info({"message": "Consuming event", "event": event})
     return {"message": "consumed event"}

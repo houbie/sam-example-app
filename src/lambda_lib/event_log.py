@@ -5,13 +5,13 @@ from pynamodb.attributes import UnicodeAttribute, UTCDateTimeAttribute
 from pynamodb.models import Model
 
 
-class S3Request(Model):
+class EventLog(Model):
     """
     Lifecycle data for incoming S3 events
     """
 
     class Meta:
-        table_name = os.environ.get("S3_REQUESTS_TABLE", "s3-requests")
+        table_name = os.environ.get("EVENT_LOG_TABLE", "event-log")
         region = Session().get_config_variable("region")
 
     id = UnicodeAttribute(hash_key=True)

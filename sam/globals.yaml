@@ -5,6 +5,6 @@ Function:
   CodeUri: src/
   Environment:
     Variables:
-      S3_REQUESTS_TABLE: !Ref S3RequestTable
+      EVENT_LOG_TABLE: !Ref EventLogTable
 Api:
   EndpointConfiguration: REGIONAL

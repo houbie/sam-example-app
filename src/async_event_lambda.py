@@ -9,6 +9,6 @@ xray_tracer = Tracer()
 
 @xray_tracer.capture_lambda_handler
 @compressed_json_event_handler
-def handler(event):
+def handler(event, *_):
     logger.info({"message": "Received Json from Async invoke", "event": event})
     return process_event(event)

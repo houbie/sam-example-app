@@ -11,7 +11,7 @@ sys.path.append(os.path.dirname(__file__))
 from pytest_dynamodb import factories
 from pytest_dynamodb.port import get_port
 
-from lambda_lib.s3_request import S3Request
+from lambda_lib.event_log import EventLog
 
 EVENTS_PATH = "../events"
 JSON_EXT = ".json"
@@ -45,6 +45,6 @@ dynamodb_proc = factories.dynamodb_proc(os.path.join(os.path.dirname(__file__), 
 
 @pytest.fixture()
 def dynamo(dynamodb):
-    S3Request.Meta.host = f"http://localhost:{port}"
-    S3Request.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+    EventLog.Meta.host = f"http://localhost:{port}"
+    EventLog.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
     return dynamodb
