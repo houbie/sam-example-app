@@ -10,3 +10,5 @@ if [ ! -f "$DYNAMO_JAR" ]; then
   rm dynamodb_local_latest.tar.gz
   cd ..
 fi
+
+# TODO: run this automatically when running tests

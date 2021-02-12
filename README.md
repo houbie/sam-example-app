@@ -18,9 +18,7 @@ If you don't want to install these tools on your dev machine, you can install th
 via pip (and just delete the virtual environment when you don't need them anymore).
 
 ## Build and deploy the application
-* activate your virtual environment
-  * automatically done in Intellij/Pycharm terminals
-  * or start a Poertry shell `poetry shell`
+* activate your virtual environment (automatically done when using pyenv)
 
 * Build preparation:
 ```bash
@@ -34,20 +32,14 @@ j2 sam/template.yaml > template.yaml
 ```
 * Build with SAM CLI
 ```bash
-# run the build inside a docker container to prevent dependency issues
-sam build --use-container
+sam build
 ```
+* or do all at once with `bin\build.sh`
+
 * Deploy to AWS (outputs the urls of the deployed API gateways are)
-```bash
-sam deploy
-```
-
-_bin/build.sh_ contains all the build steps.
-
-_bin/deploy_ deploys the application and writes the outpu urls to stack_output.ini.
-
-`NOTE`: add `--profile my-own-profile` to the deploy command when not using the default AWS profile's credentials
-`NOTE`: add `--s3-bucket my-deployment-bucket` to specify the bucket where sam will upload the deployment files.
+    * create an S3 bucket where SAM can upload the deployment files
+    * `sam deploy --s3-bucket my-deployment-bucket`
+    * add the *--profile* and/or *--region* options when deploying to another region or using another credentials profile
 
 ## Use the SAM CLI to build and test locally
 
@@ -78,7 +70,7 @@ To simplify troubleshooting, SAM CLI has a command called `sam logs`. `sam logs`
 deployed Lambda function from the command line. In addition to printing the logs on the terminal, this command has
 several nifty features to help you quickly find the bug.
 
-`NOTE`: This command works for all AWS Lambda functions; not just the ones you deploy using SAM.
+`NOTE` This command works for all AWS Lambda functions; not just the ones you deploy using SAM.
 
 ```bash
 sam logs -n EventConsumerFn --stack-name sam-example-app --tail
@@ -99,6 +91,8 @@ This is to compare two possible architectures for async API gateway event handli
 Example run: `locust -f test/locust_load_tst.py -u 5 -r 5 --headless -t 30s --host=http://localhost:5000 LargePayload`
 See [Architecture](#architecture)
 
+`NOTE` The locust tests will use the AWS-CLI to fetch the API Gateway urls.
+    Set the *AWS_PROFILE* and/or *AWS_REGION* environment variables when deploying to another region or using another credentials profile.
 
 ## Cleanup
 
@@ -110,7 +104,7 @@ aws s3 rm s3://${USER}-sam-events --recursive
 aws cloudformation delete-stack --stack-name sam-example-app
 ```
 
-`NOTE`: add `--profile my-own-profile` to the deploy command when not using the default AWS profile's credentials
+`NOTE` add the *--profile* and/or *--region* options when deploying to another region or using another credentials profile
 
 ## Intellij / Pycharm
 
@@ -151,7 +145,16 @@ What are we trying out here?
         * This makes generic error handling possible 
 
 ## Troubleshooting
-`AttributeError: 'NoneType' object has no attribute 'get'`
+### AttributeError: 'NoneType' object has no attribute 'get'
 This can have multiple causes:
 * the virtual environment is not active
 * the generated _template.yaml_ is not valid: check that the yaml indentation is OK
+
+### sam build fails
+* There can be dependency conflicts between _aws-sam-cli_ and the project dependencies.
+  You can solve them by either:
+    * run the build in a container `sam build --use-container` (requires docker and is slower)
+    * use 2 different virtual environments
+      * one in which you only install _aws-sam-cli_ (and other tools)
+      * one for the project (without the tools)
+      * use pyenv local to activate them both `pyenv local sam-example-app tools-venv`

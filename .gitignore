@@ -100,7 +100,7 @@ venv.bak/
 .aws-sam
 src/requirements.txt
 /template.yaml
-/stack-output.ini
+/stack-output.json
 /.dynamodb/
 /.python-version
 
