@@ -85,6 +85,8 @@ Tests are defined in the `test` folder in this project.
 Use [pytest](https://docs.pytest.org/en/latest/) to run unit tests.
 Just run `pytest` in your virtualenv or run tests in your IDE (you have to configure the project to use pytest in Intellij/Pycharm)
 
+The tests require _DynamoDBLocal_, so you need to download it first with `bin/download-dynamo-local.sh`
+
 ## Performance/load tests
 _test/locust_perf_test.py_ contains a simple load test that posts a small and a large payload both API gateways.
 This is to compare two possible architectures for async API gateway event handling.
