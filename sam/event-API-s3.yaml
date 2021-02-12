@@ -7,7 +7,7 @@ S3EventHandlerFn:
   Type: AWS::Serverless::Function
   Properties:
     FunctionName: !Sub '${AWS::StackName}-s3-event-handler'
-    Handler: s3_event_lambda.handler
+    Handler: sam_example_app/s3_event_lambda.handler
     Events:
       EventRequestCreated:
         Type: S3

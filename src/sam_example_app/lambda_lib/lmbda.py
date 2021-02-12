@@ -3,7 +3,7 @@ from typing import Union
 
 import boto3
 
-from lambda_lib.util import compress_base64
+from sam_example_app.lambda_lib.util import compress_base64
 
 lambda_client = boto3.client('lambda')
 

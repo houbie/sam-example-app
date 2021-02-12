@@ -8,10 +8,10 @@ import dateutil.parser
 from aws_lambda_powertools import Logger
 from jsonpath_ng import parse
 
-import lambda_lib.s3 as s3
-from lambda_lib.event_log import EventLog
-from lambda_lib.tracing import start_root_span
-from lambda_lib.util import decompress_base64
+import sam_example_app.lambda_lib.s3 as s3
+from sam_example_app.lambda_lib.event_log import EventLog
+from sam_example_app.lambda_lib.tracing import start_root_span
+from sam_example_app.lambda_lib.util import decompress_base64
 
 logger = Logger()
 

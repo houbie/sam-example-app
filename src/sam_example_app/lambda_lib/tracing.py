@@ -11,7 +11,7 @@ from opentelemetry.trace import SpanKind
 from opentelemetry.trace.propagation.textmap import DictGetter
 from requests.adapters import HTTPAdapter, CaseInsensitiveDict
 
-from lambda_lib.power_requests import http
+from sam_example_app.lambda_lib.power_requests import http
 
 logger = Logger()
 

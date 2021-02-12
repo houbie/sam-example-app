@@ -1,7 +1,7 @@
 from aws_lambda_powertools import Tracer, Logger
 
-from event_handler import process_event
-from lambda_lib.lambda_handler_decorators import compressed_json_event_handler
+from sam_example_app.event_handler import process_event
+from sam_example_app.lambda_lib.lambda_handler_decorators import compressed_json_event_handler
 
 logger = Logger()
 xray_tracer = Tracer()

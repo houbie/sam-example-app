@@ -3,15 +3,10 @@ import json
 import os
 
 import pytest
-import sys
-
-sys.path.append(os.path.join(os.path.dirname(__file__), "../src"))
-sys.path.append(os.path.dirname(__file__))
-
 from pytest_dynamodb import factories
 from pytest_dynamodb.port import get_port
 
-from lambda_lib.event_log import EventLog
+from sam_example_app.lambda_lib.event_log import EventLog
 
 EVENTS_PATH = "../events"
 JSON_EXT = ".json"

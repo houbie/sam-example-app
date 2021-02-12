@@ -1,4 +1,4 @@
-from lambda_lib.util import compress_base64, decompress_base64
+from sam_example_app.lambda_lib.util import compress_base64, decompress_base64
 
 
 def test_compress_decompress():

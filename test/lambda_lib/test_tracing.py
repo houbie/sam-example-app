@@ -3,8 +3,8 @@ from opentelemetry.trace import SpanKind
 from opentelemetry.trace.propagation.textmap import DictGetter
 from requests import Response
 
-from lambda_lib.power_requests import http
-from lambda_lib.tracing import tracer
+from sam_example_app.lambda_lib.power_requests import http
+from sam_example_app.lambda_lib.tracing import tracer
 
 
 def test_propagation(mocker):

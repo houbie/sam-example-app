@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from lambda_lib.event_log import EventLog
+from sam_example_app.lambda_lib.event_log import EventLog
 
 
 def test_crud(dynamo):
@@ -11,7 +11,7 @@ def test_crud(dynamo):
     # Get the item and check the content of this item
     """
     event_log = EventLog("some-id", process_name="some_process", bucket="bucket_arn", s3_key="s3_key",
-                   received_time=datetime.now(timezone.utc))
+                         received_time=datetime.now(timezone.utc))
     event_log.save()
 
     event_log2 = EventLog.get("some-id")

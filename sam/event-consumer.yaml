@@ -2,7 +2,7 @@ EventConsumerFn:
   Type: AWS::Serverless::Function
   Properties:
     FunctionName: !Sub '${AWS::StackName}-event-consumer'
-    Handler: event_consumer_lambda.handler
+    Handler: sam_example_app/event_consumer_lambda.handler
     Events:
       ApiEvent:
         Type: Api

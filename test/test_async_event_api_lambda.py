@@ -3,9 +3,9 @@ import os
 
 from pytest_mock import MockerFixture
 
-import async_event_lambda
-from async_event_api_lambda import handler
-from lambda_lib.util import compress_base64
+from sam_example_app import async_event_lambda
+from sam_example_app.async_event_api_lambda import handler
+from sam_example_app.lambda_lib.util import compress_base64
 
 
 def test_handler(load_event, mocker: MockerFixture):
@@ -20,11 +20,11 @@ def test_handler(load_event, mocker: MockerFixture):
     """
     api_gw_event = load_event("api_gw_event")
 
-    invoke_lambda = mocker.patch("lambda_lib.lmbda.lambda_client.invoke")
+    invoke_lambda = mocker.patch("sam_example_app.lambda_lib.lmbda.lambda_client.invoke")
     # forward the payload of the lambda_client.invoke call to the async_event_lambda
     invoke_lambda.side_effect = lambda Payload, **kwargs: async_event_lambda.handler(Payload, {})
 
-    http_post = mocker.patch("lambda_lib.power_requests.http.post")
+    http_post = mocker.patch("sam_example_app.lambda_lib.power_requests.http.post")
 
     assert handler(api_gw_event, {}) == {'body': '{"message": "async invoked lambda ASYNC_HANDLER_FN_NOT_SET"}',
                                          'headers': {'Content-Type': 'application/json'}, 'statusCode': 200}
@@ -43,7 +43,7 @@ def test_handler_unwrapped(mocker: MockerFixture):
     unwrapped_handler = handler.__wrapped__.__wrapped__
     event = {"foo": "bar"}
 
-    invoke_lambda = mocker.patch("lambda_lib.lmbda.lambda_client.invoke")
+    invoke_lambda = mocker.patch("sam_example_app.lambda_lib.lmbda.lambda_client.invoke")
 
     assert unwrapped_handler(event) == {"message": "async invoked lambda ASYNC_HANDLER_FN_NOT_SET"}
 

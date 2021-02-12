@@ -3,8 +3,8 @@ import os
 
 from aws_lambda_powertools import Tracer, Logger
 
-from lambda_lib.lambda_handler_decorators import rest_api_handler
-from lambda_lib.lmbda import async_invoke
+from sam_example_app.lambda_lib.lambda_handler_decorators import rest_api_handler
+from sam_example_app.lambda_lib.lmbda import async_invoke
 
 logger = Logger()
 xray_tracer = Tracer()

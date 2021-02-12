@@ -2,7 +2,7 @@ S3EventErrorHandlerFn:
   Type: AWS::Serverless::Function
   Properties:
     FunctionName: !Sub '${AWS::StackName}-s3-event-error-handler'
-    Handler: s3_event_error_handler_lambda.handler
+    Handler: sam_example_app/s3_event_error_handler_lambda.handler
     Policies:
       - S3CrudPolicy:
           BucketName: '{{ env("USER").lower() }}-sam-events'

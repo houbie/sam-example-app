@@ -1,6 +1,6 @@
 from aws_lambda_powertools import Tracer, Logger
 
-from lambda_lib.event_log import EventLog
+from sam_example_app.lambda_lib.event_log import EventLog
 
 MAX_RETRIES = 1
 

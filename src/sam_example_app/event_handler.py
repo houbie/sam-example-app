@@ -3,8 +3,8 @@ import os
 from aws_lambda_powertools import Logger
 from opentelemetry.trace import SpanKind
 
-from lambda_lib.power_requests import http
-from lambda_lib.tracing import tracer
+from sam_example_app.lambda_lib.power_requests import http
+from sam_example_app.lambda_lib.tracing import tracer
 
 logger = Logger()
 

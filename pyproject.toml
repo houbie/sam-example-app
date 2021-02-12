@@ -3,6 +3,9 @@ name = "sam-example-app"
 version = "0.1.0"
 description = "AWS SAM experiments"
 authors = ["ihoubr <ivo.houbrechts@nike.com>"]
+packages = [
+    { include = "sam_example_app", from = "src" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"

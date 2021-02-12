@@ -1,7 +1,7 @@
 from aws_lambda_powertools import Tracer, Logger
-
-from lambda_lib.lambda_handler_decorators import rest_api_handler
 from opentelemetry import trace
+
+from sam_example_app.lambda_lib.lambda_handler_decorators import rest_api_handler
 
 logger = Logger()
 xray_tracer = Tracer()
