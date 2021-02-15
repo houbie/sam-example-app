@@ -7,8 +7,8 @@ EventConsumerFn:
       HttpApiEvent:
         Type: HttpApi
         Properties:
-          Path: /consumer-events
-          Method: POST
+          Path: /{proxy+}
+          Method: ANY
           ApiId: !Ref ConsumerHttpApi
 EventConsumerLogGroup:
   Type: AWS::Logs::LogGroup

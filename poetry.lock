@@ -108,7 +108,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 name = "click"
 version = "7.1.2"
 description = "Composable command line interface toolkit"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
@@ -154,7 +154,7 @@ devel = ["colorama", "jsonschema", "json-spec", "pylint", "pytest", "pytest-benc
 name = "flask"
 version = "1.1.2"
 description = "A simple framework for building complex web applications."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
@@ -253,7 +253,7 @@ python-versions = "*"
 name = "itsdangerous"
 version = "1.1.0"
 description = "Various helpers to pass data to untrusted environments and back."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -275,7 +275,7 @@ yaml = ["pyyaml (>=3.10)"]
 name = "jinja2"
 version = "2.11.3"
 description = "A very fast and expressive template engine."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
@@ -344,7 +344,7 @@ Werkzeug = ">=1.0.1"
 name = "markupsafe"
 version = "1.1.1"
 description = "Safely add untrusted strings to HTML/XML markup."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
 
@@ -630,6 +630,17 @@ python-versions = "*"
 botocore = ">=1.12.36,<2.0a.0"
 
 [[package]]
+name = "serverless-wsgi"
+version = "1.7.6"
+description = "Amazon AWS API Gateway WSGI wrapper"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+werkzeug = "*"
+
+[[package]]
 name = "six"
 version = "1.15.0"
 description = "Python 2 and 3 compatibility utilities"
@@ -662,7 +673,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 name = "werkzeug"
 version = "1.0.1"
 description = "The comprehensive WSGI web application library."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
@@ -706,7 +717,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "b74678ac0aa69d6265d1aa3f14b289d01bda9a07fe7af3bbaf3e2874512947c7"
+content-hash = "32d476144d9a71040c8d6a0cfae90fc525b2cd61edf12685ce2b4908431795b2"
 
 [metadata.files]
 atomicwrites = [
@@ -1191,6 +1202,10 @@ requests = [
 s3transfer = [
     {file = "s3transfer-0.3.4-py2.py3-none-any.whl", hash = "sha256:1e28620e5b444652ed752cf87c7e0cb15b0e578972568c6609f0f18212f259ed"},
     {file = "s3transfer-0.3.4.tar.gz", hash = "sha256:7fdddb4f22275cf1d32129e21f056337fd2a80b6ccef1664528145b72c49e6d2"},
+]
+serverless-wsgi = [
+    {file = "serverless-wsgi-1.7.6.tar.gz", hash = "sha256:7c77f2c8a3e96e2adeb00903c36f01524e0db171d8f7e138a10abd1817b4b87d"},
+    {file = "serverless_wsgi-1.7.6-py2.py3-none-any.whl", hash = "sha256:fcc3aaa33f4665e4dc77c7aa61c54566dca9c1277890386ae1f189799163c2c6"},
 ]
 six = [
     {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},

@@ -55,11 +55,13 @@ Run functions locally and invoke them with the `sam local invoke` command.
 
 
 The SAM CLI can also emulate your application's API. Use the `sam local start-api` to run the API locally on port 3000.
-Note that only the first API gateway in the template will be available.
 
+`NOTE` Only _AWS::Serverless::Api_ and _AWS::Serverless::HttpApi_ can be tested locally.
+You won't be able to test your custom _AWS::ApiGateway::RestApi_ locally.
 ```bash
 sam local start-api
 # in other shell
+curl  "http://localhost:3000/echo/foo/bar?q=my-query"
 curl -X POST -H "Content-Type: application/json" -d '{"foo":"bar"}' http://localhost:3000/consumer-events
 curl -X POST -H "Content-Type: application/json" -d '{"foo":"bar"}' http://localhost:3000/events-async
 ```

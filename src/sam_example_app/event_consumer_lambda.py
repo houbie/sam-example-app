@@ -1,15 +1,28 @@
-from aws_lambda_powertools import Tracer, Logger
-from opentelemetry import trace
-
-from sam_example_app.lambda_lib.lambda_handler_decorators import rest_api_handler
+import serverless_wsgi
+from aws_lambda_powertools import Logger
+from flask import Flask, jsonify, request
 
 logger = Logger()
-xray_tracer = Tracer()
+
+app = Flask(__name__)
 
 
-@xray_tracer.capture_lambda_handler
-@rest_api_handler
-def handler(event, *_):
-    trace.get_current_span().set_attribute("name", event.get("NAME", "no name provided"))
-    logger.info({"message": "Consuming event", "event": event})
-    return {"message": "consumed event"}
+def handler(event, context):
+    return serverless_wsgi.handle_request(app, event, context)
+
+
+@app.route("/consumer-events", methods=["POST"])
+def consume_event():
+    # trace.get_current_span().set_attribute("name", event.get("NAME", "no name provided"))
+    logger.info({"message": "Consuming event", "event": request.json})
+    return jsonify({"message": "consumed event"})
+
+
+@app.route("/echo/<path_param_1>/<path_param_2>", methods=["GET"])
+def handle_foo(path_param_1, path_param_2):
+    resp = {"message": "echoing",
+            "pathParam1": path_param_1,
+            "pathParam2": path_param_2,
+            "query-params": request.args}
+    logger.info(resp)
+    return jsonify(resp)

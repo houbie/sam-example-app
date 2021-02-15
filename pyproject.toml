@@ -19,6 +19,8 @@ opentelemetry-api = "^0.17b0"
 opentelemetry-propagator-b3 = "^0.17b0"
 opentelemetry-sdk = "^0.17b0"
 opentelemetry-instrumentation-requests = "^0.17b0"
+serverless-wsgi = "^1.7.6"
+Flask = "^1.1.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.1"
