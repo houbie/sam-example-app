@@ -5,6 +5,7 @@ import pytest
 from pytest_dynamodb import factories
 from pytest_dynamodb.port import get_port
 
+from sam_example_app.event_consumer_lambda import app
 from sam_example_app.lambda_lib.event_log import EventLog
 
 EVENTS_PATH = "../events"
@@ -23,14 +24,14 @@ port = get_port(None)
 dynamodb_proc = factories.dynamodb_proc(dynamo_dir, port=port)
 
 
-@pytest.fixture()
+@pytest.fixture
 def dynamo(dynamodb):
     EventLog.Meta.host = f"http://localhost:{port}"
     EventLog.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
     return dynamodb
 
 
-@pytest.fixture()
+@pytest.fixture
 def load_event():
     def load(file: str) -> object:
         if not file.endswith(JSON_EXT):
@@ -39,3 +40,9 @@ def load_event():
         return json.load(open(event_file, "r"))
 
     return load
+
+
+@pytest.fixture
+def flask_client():
+    with app.test_client() as client:
+        yield client
