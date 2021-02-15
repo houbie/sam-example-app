@@ -19,10 +19,12 @@ def consume_event():
 
 
 @app.route("/echo/<path_param_1>/<path_param_2>", methods=["GET"])
-def handle_foo(path_param_1, path_param_2):
-    logger.info({"event": request.environ['serverless.event'], "context": vars(request.environ['serverless.context'])})
-    resp = {"message": "echoing",
-            "pathParam1": path_param_1,
-            "pathParam2": path_param_2,
-            "query-params": request.args}
-    return jsonify(resp)
+def echo(path_param_1, path_param_2):
+    original_event = request.environ.get("serverless.event")
+    if original_event:  # not available in unit test
+        logger.info({"event": original_event, "context": vars(request.environ["serverless.context"])})
+
+    return jsonify({"message": "echoing",
+                    "pathParam1": path_param_1,
+                    "pathParam2": path_param_2,
+                    "query-params": request.args})
