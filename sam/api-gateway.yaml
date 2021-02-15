@@ -1,5 +1,10 @@
 # note: only the first Api in the template will be exposed by 'sam local start-api'
-SamManagedApi:
+ConsumerHttpApi:
+  Type: AWS::Serverless::HttpApi
+  Properties:
+    StageName: !Ref stage
+
+AsyncInvokeApi:
   Type: AWS::Serverless::Api
   Properties:
     StageName: !Ref stage

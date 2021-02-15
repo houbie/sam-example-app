@@ -4,12 +4,12 @@ EventConsumerFn:
     FunctionName: !Sub '${AWS::StackName}-event-consumer'
     Handler: sam_example_app/event_consumer_lambda.handler
     Events:
-      ApiEvent:
-        Type: Api
+      HttpApiEvent:
+        Type: HttpApi
         Properties:
           Path: /consumer-events
           Method: POST
-          RestApiId: !Ref SamManagedApi
+          ApiId: !Ref ConsumerHttpApi
 EventConsumerLogGroup:
   Type: AWS::Logs::LogGroup
   DependsOn:

@@ -24,7 +24,9 @@ Resources:
 
 
 Outputs:
-  SamManagedApiUrl:
-    Value: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/${stage}"
+  ConsumerHttpApiUrl:
+    Value: !Sub "https://${ConsumerHttpApi}.execute-api.${AWS::Region}.amazonaws.com/${stage}"
   S3EventApiUrl:
     Value: !Sub "https://${S3EventApi}.execute-api.${AWS::Region}.amazonaws.com/${stage}"
+  AsyncInvokeApiUrl:
+    Value: !Sub "https://${AsyncInvokeApi}.execute-api.${AWS::Region}.amazonaws.com/${stage}"

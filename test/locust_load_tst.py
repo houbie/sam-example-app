@@ -13,8 +13,8 @@ os.system("bin/dump-stack-output.sh")
 with open("stack-output.json") as file:
     stack_outputs = json.load(file)["Stacks"][0]["Outputs"]
 
-sam_managed_api_url = [output["OutputValue"] for output in stack_outputs
-                       if output["OutputKey"] == "SamManagedApiUrl"][0]
+async_invoke_api_url = [output["OutputValue"] for output in stack_outputs
+                        if output["OutputKey"] == "AsyncInvokeApiUrl"][0]
 s3_event_api_url = [output["OutputValue"] for output in stack_outputs
                     if output["OutputKey"] == "S3EventApiUrl"][0]
 
@@ -28,7 +28,7 @@ with open("events/large.json") as file:
 class SmallPayload(HttpUser):
     @task
     def async_api(self):
-        self.client.post(sam_managed_api_url + "/events-async", json=small_payload)
+        self.client.post(async_invoke_api_url + "/events-async", json=small_payload)
 
     @task
     def s3(self):
@@ -38,7 +38,7 @@ class SmallPayload(HttpUser):
 class LargePayload(HttpUser):
     @task
     def async_api(self):
-        self.client.post(sam_managed_api_url + "/events-async", json=large_payload)
+        self.client.post(async_invoke_api_url + "/events-async", json=large_payload)
 
     @task
     def s3(self):

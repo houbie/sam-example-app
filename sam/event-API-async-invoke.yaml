@@ -9,7 +9,7 @@ AsyncEventApiFn:
         Properties:
           Path: /events-async
           Method: POST
-          RestApiId: !Ref SamManagedApi
+          RestApiId: !Ref AsyncInvokeApi
     Policies:
       - 'arn:aws:iam::aws:policy/AWSLambda_FullAccess'
     Environment:
@@ -31,7 +31,7 @@ AsyncEventHandlerFn:
     Handler: sam_example_app/async_event_lambda.handler
     Environment:
       Variables:
-        EVENT_CONSUMER_URL: !Sub "https://${SamManagedApi}.execute-api.${AWS::Region}.amazonaws.com/${stage}/consumer-events"
+        EVENT_CONSUMER_URL: !Sub "https://${ConsumerHttpApi}.execute-api.${AWS::Region}.amazonaws.com/${stage}/consumer-events"
 AsyncEventHandlerLogGroup:
   Type: AWS::Logs::LogGroup
   DependsOn:
